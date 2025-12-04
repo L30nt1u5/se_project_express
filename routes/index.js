@@ -4,6 +4,7 @@ const clothingItemRouter = require('./clothingItems');
 const { login, createUser } = require('../controllers/users');
 const { getItems } = require('../controllers/clothingItems');
 const auth = require('../middlewares/auth');
+const { NOT_FOUND } = require('../utils/errors');
 
 // Public routes
 router.post('/signin', login);
@@ -16,7 +17,7 @@ router.use('/users', userRouter);
 router.use('/items', clothingItemRouter);
 
 router.use((req, res) => {
-  res.status(404).send({ message: 'Requested resource not found' });
+  res.status(NOT_FOUND).send({ message: 'Requested resource not found' });
 });
 
 module.exports = router;
