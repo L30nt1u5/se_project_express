@@ -40,7 +40,7 @@ const createUser = (req, res) => {
 
   return bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({ name, avatar, email, password: hash }))
+    .then((hash) => User.create({ name, avatar, email: email.toLowerCase(), password: hash }))
     .then((user) => {
       const { _id } = user;
       return res.status(201).send({ _id, name, avatar, email });
@@ -88,7 +88,7 @@ const login = (req, res) => {
   if (!email || !password) {
     return res.status(BAD_REQUEST).send({ message: 'Email and password are required' });
   }
-  return User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email.toLowerCase(), password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
       return res.status(200).send({ token });
