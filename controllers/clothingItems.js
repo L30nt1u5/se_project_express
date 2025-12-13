@@ -4,10 +4,7 @@ const { BAD_REQUEST, FORBIDDEN, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('..
 const getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) => {
-      console.error(`Error ${err.name} with the message ${err.message} has occurred while executing the code`);
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
-    });
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' }));
 };
 
 const createItem = (req, res) => {
@@ -17,7 +14,6 @@ const createItem = (req, res) => {
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
-      console.error(`Error ${err.name} with the message ${err.message} has occurred while executing the code`);
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST).send({ message: 'Invalid data' });
       }
@@ -37,7 +33,6 @@ const deleteItem = (req, res) => {
       return ClothingItem.findByIdAndDelete(itemId).then(() => res.status(200).send({ message: 'Item deleted successfully', item }));
     })
     .catch((err) => {
-      console.error(`Error ${err.name} with the message ${err.message} has occurred while executing the code`);
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'Item not found' });
       }
@@ -59,7 +54,6 @@ const likeItem = (req, res) => {
     .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
-      console.error(`Error ${err.name} with the message ${err.message} has occurred while executing the code`);
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'Item not found' });
       }
@@ -81,7 +75,6 @@ const dislikeItem = (req, res) => {
     .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
-      console.error(`Error ${err.name} with the message ${err.message} has occurred while executing the code`);
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'Item not found' });
       }

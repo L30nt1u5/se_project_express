@@ -49,3 +49,4 @@ The application provides the following core features:
 
 `npm run dev` — to launch the server with the hot reload feature
 
+project video link- https://drive.google.com/drive/folders/1tjGv0Mkcbs3QYh8Nwe--VonPG6f3XpC5?usp=sharing
