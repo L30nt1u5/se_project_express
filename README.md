@@ -51,4 +51,4 @@ The application provides the following core features:
 
 project video link- https://drive.google.com/drive/folders/1tjGv0Mkcbs3QYh8Nwe--VonPG6f3XpC5?usp=sharing
 
-domain :ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPxMsf1DkwYMl1qLYS3or0AdeewXy4Ubi5Qqx6jr06N8 leontiusjoseph998@gmail.com
+domain :ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPxMsf1DkwYMl1qLYS3or0AdeewXy4Ubi5Qqx6jr06N8 leontiusjoseph998
