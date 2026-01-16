@@ -1,13 +1,15 @@
 const ClothingItem = require('../models/clothingItem');
-const { BAD_REQUEST, FORBIDDEN, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/errors');
+const BadRequestError = require('../errors/bad-request-error');
+const ForbiddenError = require('../errors/forbidden-error');
+const NotFoundError = require('../errors/not-found-error');
 
-const getItems = (req, res) => {
+const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' }));
+    .catch(() => next(new Error('An error has occurred on the server')));
 };
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
@@ -15,35 +17,35 @@ const createItem = (req, res) => {
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(BAD_REQUEST).send({ message: 'Invalid data' });
+        return next(new BadRequestError('Invalid data'));
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
+      return next(new Error('An error has occurred on the server'));
     });
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findById(itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        return res.status(FORBIDDEN).send({ message: 'You do not have permission to delete this item' });
+        return next(new ForbiddenError('You do not have permission to delete this item'));
       }
       return ClothingItem.findByIdAndDelete(itemId).then(() => res.status(200).send({ message: 'Item deleted successfully', item }));
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Item not found' });
+        return next(new NotFoundError('Item not found'));
       }
       if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({ message: 'Invalid item ID' });
+        return next(new BadRequestError('Invalid item ID'));
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
+      return next(new Error('An error has occurred on the server'));
     });
 };
 
-const likeItem = (req, res) => {
+const likeItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndUpdate(
@@ -55,16 +57,16 @@ const likeItem = (req, res) => {
     .then((item) => res.status(200).send(item))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Item not found' });
+        return next(new NotFoundError('Item not found'));
       }
       if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({ message: 'Invalid item ID' });
+        return next(new BadRequestError('Invalid item ID'));
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
+      return next(new Error('An error has occurred on the server'));
     });
 };
 
-const dislikeItem = (req, res) => {
+const dislikeItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndUpdate(
@@ -76,12 +78,12 @@ const dislikeItem = (req, res) => {
     .then((item) => res.status(200).send(item))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Item not found' });
+        return next(new NotFoundError('Item not found'));
       }
       if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({ message: 'Invalid item ID' });
+        return next(new BadRequestError('Invalid item ID'));
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
+      return next(new Error('An error has occurred on the server'));
     });
 };
 
