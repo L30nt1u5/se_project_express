@@ -1,5 +1,9 @@
 # WTWR (What to Wear?): Back End
 
+frontend:https://github.com/L30nt1u5/se_project_react.git
+
+backend:https://github.com/L30nt1u5/se_project_express.git
+
 ## Project Overview
 
 WTWR (What to Wear?) is a back-end server for a clothing recommendation application. The server provides a RESTful API that allows users to manage their wardrobe, track clothing items, and interact with other users' clothing collections. This is a full-featured Express.js backend with user authentication, authorization, and database persistence.
@@ -50,7 +54,4 @@ The application provides the following core features:
 `npm run dev` — to launch the server with the hot reload feature
 
 project video link- https://drive.google.com/drive/folders/1tjGv0Mkcbs3QYh8Nwe--VonPG6f3XpC5?usp=sharing
-
-frontend:https://github.com/L30nt1u5/se_project_react.git
-
-backtend:://github.com/L30nt1u5/se_project_express.git 
+ 
